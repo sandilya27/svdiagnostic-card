@@ -6,9 +6,12 @@
 <title>Shailendra Kr. Choudhary | S V Diagnostic &amp; Imaging Centre</title>
 <meta name="description" content="Sales Manager, S V Diagnostic & Imaging Centre, Samastipur. Call or WhatsApp +91 79790 17930.">
 <meta property="og:title" content="Shailendra Kr. Choudhary">
-<meta property="og:description" content="Sales Manager, S V Diagnostic & Imaging Centre, Samastipur. Tap to call or WhatsApp.">
-<meta property="og:image" content="https://sandilya27.github.io/svdiagnostic-card/photo.jpg">
-<meta property="og:url" content="https://sandilya27.github.io/svdiagnostic-card/">
+<meta property="og:description" content="Sales Manager, S V Diagnostic & Imaging Centre, Samastipur">
+<meta property="og:image" content="https://shailendra.vercel.app/photo.jpg">
+<meta property="og:image:width" content="480">
+<meta property="og:image:height" content="480">
+<meta property="og:url" content="https://shailendra.vercel.app/">
+<link rel="canonical" href="https://shailendra.vercel.app/">
 <meta property="og:type" content="profile">
 <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#121e1e" media="(prefers-color-scheme: dark)">
@@ -132,7 +135,7 @@
       <a class="btn btn-line" href="https://wa.me/917979017930"><i class="ph ph-whatsapp-logo"></i>WhatsApp</a>
     </div>
     <div class="secondary">
-      <button class="link" id="save" type="button"><i class="ph ph-user-plus"></i><span>Save contact</span></button>
+      <a class="link" id="save" href="shailendra.vcf"><i class="ph ph-user-plus"></i><span>Save contact</span></a>
       <button class="link" id="share" type="button"><i class="ph ph-share-network"></i><span>Share card</span></button>
     </div>
   </div>
@@ -164,24 +167,28 @@
 </main>
 
 <script>
-  document.getElementById("save").onclick = () => {
-    const vcf = ["BEGIN:VCARD", "VERSION:3.0", "N:Choudhary;Shailendra Kr.;;;", "FN:Shailendra Kr. Choudhary",
-      "ORG:S V Diagnostic & Imaging Centre", "TITLE:Sales Manager", "TEL;TYPE=CELL:+917979017930",
-      "EMAIL;TYPE=INTERNET:skchoudhary25011970@gmail.com", "EMAIL;TYPE=WORK:svdic2020@gmail.com", "ADR;TYPE=WORK:;;Aadarsh Nagar;Samastipur;Bihar;848101;India",
-      // vCard lines must be folded at 75 chars; the photo line is long.
-      ("PHOTO;ENCODING=b;TYPE=JPEG:" + document.querySelector(".photo").src.split(",")[1]).replace(/(.{74})/g, "$1\r\n "),
-      "END:VCARD"].join("\r\n");
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(new Blob([vcf], { type: "text/vcard" }));
-    a.download = "Shailendra-Choudhary.vcf";
-    a.click();
-  };
+  const SITE = "https://shailendra.vercel.app/";
+
+  // Android: open the phone's own "Add contact" screen, pre-filled (same as scanning the QR).
+  // Other phones (iPhone) open shailendra.vcf, which shows the contact card with his photo.
+  if (/Android/i.test(navigator.userAgent)) {
+    const e = encodeURIComponent;
+    document.getElementById("save").href = "intent:#Intent;action=android.intent.action.INSERT;" +
+      "type=vnd.android.cursor.dir/raw_contact;" +
+      "S.name=" + e("Shailendra Kr. Choudhary") + ";S.phone=" + e("+917979017930") +
+      ";S.email=" + e("skchoudhary25011970@gmail.com") + ";S.company=" + e("S V Diagnostic & Imaging Centre") +
+      ";S.job_title=" + e("Sales Manager") + ";S.browser_fallback_url=" + e(SITE + "shailendra.vcf") + ";end";
+  }
 
   document.getElementById("share").onclick = async () => {
-    const text = "Shailendra Kr. Choudhary, Sales Manager, S V Diagnostic & Imaging Centre, Samastipur. Call/WhatsApp +91 79790 17930";
-    const url = location.protocol.startsWith("http") ? location.href : "";
-    if (navigator.share) { try { await navigator.share({ title: "Shailendra Kr. Choudhary", text, url }); } catch {} return; }
-    location.href = "https://wa.me/?text=" + encodeURIComponent(text + (url ? " " + url : ""));
+    // *bold* renders as bold on WhatsApp
+    const text = "*Shailendra Kr. Choudhary*
+Sales Manager, S V Diagnostic & Imaging Centre, Samastipur
+
+Call / WhatsApp: +91 79790 17930
+Digital card:";
+    if (navigator.share) { try { await navigator.share({ title: "Shailendra Kr. Choudhary", text, url: SITE }); } catch {} return; }
+    location.href = "https://wa.me/?text=" + encodeURIComponent(text + " " + SITE);
   };
 </script>
 </body>
